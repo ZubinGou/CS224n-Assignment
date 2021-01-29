@@ -4,6 +4,10 @@
 
 # Dataset
 datasets/
+data/
+
+# Results
+results/
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
