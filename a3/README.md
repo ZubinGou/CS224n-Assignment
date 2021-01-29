@@ -1,8 +1,8 @@
 ## 1. Machine Learning & Neural Networks
 ### (a) Adam Optimizer
 #### i. momentum
-动量的功能类似于滑动窗口平均，使得梯度m主要受到之前值的影响，就算当前梯度爆炸也会被稀释。
-这种平滑方法减小了梯度变化程度，增加了模型稳定性，收敛更快；另外借助动量的惯性也可以逃出部分局部最优点。
+- 动量的功能类似于滑动窗口平均，使得梯度m主要受到之前值的影响，就算当前梯度爆炸也会被稀释。
+- 这种平滑方法减小了梯度变化程度，增加了模型稳定性，收敛更快；另外借助动量的惯性也可以逃出部分局部最优点。
 
 #### ii. Adam
 m是移动平均梯度（一阶动量），v是指数移动平均梯度（二阶动量）
@@ -45,8 +45,8 @@ $$
 n shift + n arc = 2n
 
 ### (c-e) Coding
-训练：简单修改采用GPU加速后，在T4上训练几分钟就可以跑完10个epoch。
-测试：没有继续调参的情况下，test集上的 UAS 达到 88.83 
+- 训练：简单修改采用GPU加速后，在T4上训练几分钟就可以跑完10个epoch。
+- 测试：没有继续调参的情况下，test集上的 UAS 达到 88.83 
 
 ![](./images/result.png)
 
@@ -57,23 +57,23 @@ n shift + n arc = 2n
 4. and, but and so
 
 #### i.
-**Error type**: Verb Phrase Attachment Error
-**Incorrect dependency**: wedding -> fearing
-**Correct dependency**: heading -> fearing
+- **Error type**: Verb Phrase Attachment Error
+- **Incorrect dependency**: wedding -> fearing
+- **Correct dependency**: heading -> fearing
 
 #### ii.
-**Error type**: Coordination Attachment Error
-**Incorrect dependency**: makes -> rescue
-**Correct dependency**: rush -> rescue
+- **Error type**: Coordination Attachment Error
+- **Incorrect dependency**: makes -> rescue
+- **Correct dependency**: rush -> rescue
 
 #### iii.
-**Error type**: Prepositional Phrase Attachment Error
-**Incorrect dependency**: named -> Midland
-**Correct dependency**: guy -> Midland
+- **Error type**: Prepositional Phrase Attachment Error
+- **Incorrect dependency**: named -> Midland
+- **Correct dependency**: guy -> Midland
 
 #### iv.
-**Error type**: Modifier Attachment Error
-**Incorrect dependency**: elements -> most
-**Correct dependency**: crucial -> most
+- **Error type**: Modifier Attachment Error
+- **Incorrect dependency**: elements -> most
+- **Correct dependency**: crucial -> most
 
 
