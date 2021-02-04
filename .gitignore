@@ -9,9 +9,14 @@ en_es_data/
 
 # Results
 results/
+outputs/
 
 # Logs
 runs/
+
+# Model
+model.bin
+model.bin.optim
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

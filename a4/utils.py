@@ -31,9 +31,7 @@ def pad_sents(sents, pad_token):
     ### YOUR CODE HERE (~6 Lines)
     sents_lenths = list(map(len, sents))
     max_len = max(sents_lenths)
-    sents_padded = sents
-    for idx, sentlen in enumerate(sents_lenths):
-        sents_padded[idx].extend([pad_token] * (max_len - sentlen))
+    sents_padded = [sents[i] + [pad_token] * (max_len - sents_lenths[i]) for i in range(len(sents))]
     ### END YOUR CODE
 
     return sents_padded

@@ -249,7 +249,7 @@ class NMT(nn.Module):
         ###     Tensor Stacking:
         ###         https://pytorch.org/docs/stable/torch.html#torch.stack
         enc_hiddens_proj = self.att_projection(enc_hiddens) # (b, src_len, h)
-        Y = torch.zeros((target_padded.shape[0], batch_size, self.model_embeddings.embed_size), device=self.device) # (tgt_len, b, e)
+        Y = self.model_embeddings.target(target_padded)
         for Y_t in torch.split(Y, 1):
             Y_t = torch.squeeze(Y_t, 0) # (b, e)
             Ybar_t = torch.cat((Y_t, o_prev), 1) # o_prev (b, h) -> Ybar_t (b, e+h)
@@ -316,7 +316,7 @@ class NMT(nn.Module):
         ###         https://pytorch.org/docs/stable/torch.html#torch.squeeze
         dec_state = self.decoder(Ybar_t, dec_state)
         dec_hidden, dec_cell = dec_state
-        e_t = torch.squeeze(torch.bmm(enc_hiddens_proj, torch.unsqueeze(dec_hidden, 2)), dim=2) # dec_hidden (b, h), enc_hidden_proj (b, src_len, h) -> e_t (b, src_len)
+        e_t = torch.bmm(enc_hiddens_proj, torch.unsqueeze(dec_hidden, 2)).squeeze(dim=2) # dec_hidden (b, h), enc_hidden_proj (b, src_len, h) -> e_t (b, src_len)
 
         ### END YOUR CODE
 
@@ -352,7 +352,8 @@ class NMT(nn.Module):
         ###     Tanh:
         ###         https://pytorch.org/docs/stable/torch.html#torch.tanh
         alpha_t = F.softmax(e_t, 1) # (b, src_len)
-        a_t = torch.squeeze(torch.bmm(torch.unsqueeze(alpha_t, 1), enc_hiddens), 1)
+        # a_t = torch.squeeze(torch.bmm(torch.unsqueeze(alpha_t, 1), enc_hiddens), 1)
+        a_t = alpha_t.unsqueeze(1).bmm(enc_hiddens).squeeze(1)
         U_t = torch.cat((dec_hidden, a_t), 1)
         V_t = self.combined_output_projection(U_t)
         O_t = self.dropout(torch.tanh(V_t))
@@ -429,7 +430,7 @@ class NMT(nn.Module):
             contiuating_hyp_scores = (hyp_scores.unsqueeze(1).expand_as(log_p_t) + log_p_t).view(-1)
             top_cand_hyp_scores, top_cand_hyp_pos = torch.topk(contiuating_hyp_scores, k=live_hyp_num)
 
-            prev_hyp_ids = top_cand_hyp_pos / len(self.vocab.tgt)
+            prev_hyp_ids = top_cand_hyp_pos // len(self.vocab.tgt)
             hyp_word_ids = top_cand_hyp_pos % len(self.vocab.tgt)
 
             new_hypotheses = []
