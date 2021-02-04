@@ -219,7 +219,7 @@ def train(args: Dict):
                     file=sys.stderr,
                 )
                 writer.add_scalar("average loss", average_ppl, train_iter)
-                writer.add_scalar("average ppl", average_ppl, train_iter)
+                writer.add_scalar("ppl/train", average_ppl, train_iter)
                 train_time = time.time()
                 report_loss = report_tgt_words = report_examples = 0.0
 
@@ -252,6 +252,7 @@ def train(args: Dict):
                     "validation: iter %d, dev. ppl %f" % (train_iter, dev_ppl),
                     file=sys.stderr,
                 )
+                writer.add_scalar("ppl/dev", dev_ppl, train_iter)
 
                 is_better = len(hist_valid_scores) == 0 or valid_metric > max(
                     hist_valid_scores
