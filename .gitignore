@@ -10,6 +10,9 @@ en_es_data/
 # Results
 results/
 
+# Logs
+runs/
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/
