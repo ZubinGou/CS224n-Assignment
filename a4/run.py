@@ -112,7 +112,8 @@ def train(args: Dict):
     """Train the NMT Model.
     @param args (Dict): args from cmd line
     """
-    writer = SummaryWriter("runs")
+    writer_train = SummaryWriter("runs/train")
+    writer_val = SummaryWriter("runs/val")
     train_data_src = read_corpus(args["--train-src"], source="src")
     train_data_tgt = read_corpus(args["--train-tgt"], source="tgt")
 
@@ -218,8 +219,8 @@ def train(args: Dict):
                     ),
                     file=sys.stderr,
                 )
-                writer.add_scalar("average loss", average_ppl, train_iter)
-                writer.add_scalar("ppl/train", average_ppl, train_iter)
+                writer_train.add_scalar("loss", average_ppl, train_iter)
+                writer_train.add_scalar("ppl", average_ppl, train_iter)
                 train_time = time.time()
                 report_loss = report_tgt_words = report_examples = 0.0
 
@@ -252,7 +253,7 @@ def train(args: Dict):
                     "validation: iter %d, dev. ppl %f" % (train_iter, dev_ppl),
                     file=sys.stderr,
                 )
-                writer.add_scalar("ppl/dev", dev_ppl, train_iter)
+                writer_val.add_scalar("ppl", dev_ppl, train_iter)
 
                 is_better = len(hist_valid_scores) == 0 or valid_metric > max(
                     hist_valid_scores
