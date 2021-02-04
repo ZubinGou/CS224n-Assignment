@@ -5,6 +5,7 @@
 # Dataset
 datasets/
 data/
+en_es_data/
 
 # Results
 results/
