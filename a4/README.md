@@ -27,7 +27,7 @@ Tensorboard（部分）：
 
 分析可知，图中台阶处是因为衰减学习率了。而每次陡降后有向上过拟合的趋势，可以考虑更快地衰减学习率。
 
-因此我们将验证测试改为每1000个batch一次，即设置参数 `--valid-niter=1000` ，这样9个epoch即可拟合（减少了约1/3），并且获得了更好的BLUE分数，曲线也更加平滑：
+因此我们将验证测试改为每1000个batch一次，即设置参数 `--valid-niter=1000` ，这样9个epoch即可拟合（减少了约1/3），并且获得了更好的BLEU分数，曲线也更加平滑：
 ![](images/test2.png)
 ![](images/train2.png)
 
@@ -93,11 +93,31 @@ Test集第68句：
 
 ### (c) BLEU Score
 #### i.
+$BP(c_1) = 1, p_1(c_1)=0.6, p_2(c_1)=0.5$
+$BLEU(c_1)=BP(c_1) \times \exp(0.5\times \log(p_1)+0.5\times \log(p_2))=0.5477$
+
+$BP(c_2) = 1, p_1(c_2)=0.8, p_2(c_2)=0.75$
+$BLEU(c_2)=BP(c_2) \times \exp(0.5\times \log(p_1)+0.5\times \log(p_2))=0.6324$
+
+$c_2$ is better, agreed.
 
 #### ii.
+$BP(c_1) = \exp(-\frac{1}{5}), p_1(c_1)=0.6, p_2(c_1)=0.5$
+$BLEU(c_1)=BP(c_1) \times \exp(0.5\times \log(p_1)+0.5\times \log(p_2))=0.4484$
+
+$BP(c_2) = \exp(-\frac{1}{5}), p_1(c_2)=0.4, p_2(c_2)=0.25$
+$BLEU(c_2)=BP(c_2) \times \exp(0.5\times \log(p_1)+0.5\times \log(p_2))=0.2589$
+
+$c_1$ is better, not agreed.
 
 #### iii.
+i. ii. 说明了单一的参考翻译可能引起某些好翻译因为与参考翻译重合度不够得分较低。
 
 #### iv.
+pros：
+- 节省人力
+- 标准同一，方便对比模型
 
-TODO
+cons：
+- 可能因为好翻译与参考翻译重合度（n-gram overlap）不高而给出较低得分，尤其是语料不丰富时
+- 只考虑了无顺序的n-gram，没有考虑词法（如单复数、时态）、句法（如结构和搭配）、语义（如相似表达）等信息
