@@ -1,0 +1,108 @@
+\documentclass{homework}
+\usepackage{titlesec}
+
+\title{CS 224N: Assignment 5 (2021)}
+\author{Zubin Gou}
+
+\renewcommand\thesubsection{(\alph{subsection})}
+\renewcommand\thesubsubsection{\roman{subsubsection}.}
+% \setlength{\parindent}{2em}
+
+\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection} {0em}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsubsection}{1em}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\begin{document}
+
+\maketitle
+
+\section{Attention exploration (21 points)}
+\subsection{Copying in attention}
+$$k_j^Tq \gg k_i^Tq, i\neq j $$
+
+\subsection{An average of two}
+$$q = t(k_a+k_b), t\gg 0$$
+
+\subsection{Drawbacks of single-headed attention}
+\subsubsection{}
+$$q = t(u_a+u_b), t\gg 0$$
+
+\subsubsection{}
+
+we got $k_{a} \sim \mathcal{N}\left(\mu_{a}, \alpha I+\frac{1}{2}\left(\mu_{a} \mu_{a}^{\top}\right)\right)$, and for vanishingly small $\alpha$: $k_{a} \approx \epsilon_{a} \mu_{a}$, $\epsilon_a \sim \mathcal{N}(1, \frac{1}{2})$, when $q = t(u_a+u_b), t\gg 0$:
+$$k_i^Tq \approx 0 \text{ for } i \notin\{a, b\}$$
+$$k_a^Tq \approx \epsilon_a t$$
+$$k_b^Tq \approx \epsilon_b t$$
+then:
+$$
+\begin{aligned}
+c & \approx \frac{\exp (\epsilon_a t)}{\exp (\epsilon_a t)+\exp (\epsilon_b t)} v_{a}+\frac{\exp (\epsilon_b t)}{\exp (\epsilon_a t)+\exp (\epsilon_b t)} v_{b} \\
+&=\frac{1}{\exp ((\epsilon_b-\epsilon_a) t)+1} v_{a}+\frac{1}{\exp ((\epsilon_a-\epsilon_b) t)+1} v_{b}
+\end{aligned}
+$$
+
+since $\epsilon_a, \epsilon_b \sim \mathcal{N}(1, \frac{1}{2})$, when $\epsilon_a > \epsilon_b$, $c$ will be closer to $v_a$, vice versa. (ie. $c$ will be closer to those with larger $\| k\|$)
+
+\subsection{Benefits of multi-headed attention}
+\subsubsection{}
+$$q_a = t_{1} \mu_{a}, t_{1}\gg 0$$
+$$q_b = t_{2} \mu_{b}, t_{2}\gg 0$$
+
+\subsubsection{}
+$$k_a^Tq=\epsilon_a t_1$$
+$$k_b^Tq=\epsilon_b t_2$$
+then:
+$$c_1 \approx v_a, c_2 \approx v_b$$
+$$
+c = \frac{1}{2}\left(c_{1}+c_{2}\right) \approx \frac{1}{2}\left(v_{a}+v_{b}\right)
+$$
+
+\subsection{Key-Query-Value self-attention in neural networks}
+\subsubsection{}
+$$c_2\approx u_a$$
+
+It's impossible for $c_2$ to approximate $u_b$ by adding either $u_d$ or $u_c$ to $x_2$. Say, if we add $u_d$, $\alpha_{21}$ increases, which means the weight of $x_1$ increases, but $u_d$ and $u_b$ will increase equally in $c_2$, that's why $c_2$ can never be approximated to $u_b$.
+
+\subsubsection{}
+$$
+\begin{aligned}
+V &=u_{b} u_{b}^{T} \odot \frac{1}{\left\|u_{b}\right\|_{2}^{2}}-u_{c} u_{c}^{T} \odot \frac{1}{\left\|u_{c}\right\|_{2}^{2}} \\
+&=\left(u_{b} u_{b}^{T}-u_{c} u_{c}^{T}\right) \odot \frac{1}{\beta^{2}}
+\end{aligned}
+$$
+$$K=I$$
+$$
+\begin{aligned}
+Q &=u_{d} u_{a}^{T} \odot \frac{1}{\left\|u_{a}\right\|_{2}^{2}}+u_{c} u_{d}^{T} \odot \frac{1}{\left\|u_{d}\right\|_{2}^{2}} \\
+&=\left(u_{d} u_{a}^{T}+u_{c} u_{d}^{T}\right) \odot \frac{1}{\beta^{2}}
+\end{aligned}
+$$
+
+Proof:
+$$
+v_{1}=u_{b}, v_{2}=0, v_{3}=u_{b}-u_{c}
+$$
+$$
+q_{1}=u_{c}, q_{2}=u_d, q_{3}=0
+$$
+$$
+k_i=x_i, i\in \{1,2,3\}
+$$
+\quad so,
+$$
+\alpha_{1} \approx[0,0,1], \alpha_{2} \approx[1,0,0]
+$$
+$$
+c_{1} \approx v_{3}=u_{b}-u_{c}, c_{2} \approx v_{1}=u_{b}
+$$
+
+
+
+\section{Pretrained Transformer models and knowledge access (35 points)}
+\subsection{}
+
+
+\section{Considerations in pretrained knowledge (5 points)}
+
+
+\end{document}
