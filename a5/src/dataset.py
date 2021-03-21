@@ -178,6 +178,7 @@ class CharCorruptionDataset(Dataset):
         truncated_doc = document[:truncate_len]
         # 2. break to [prefix] [masked_content] [suffix]
         masked_len = random.randint(int(1 / 8 * truncate_len), int(3 / 8 * truncate_len))
+        assert truncate_len >= 4, (doc_len, truncate_len, masked_len, document, idx)
         prefix_len = random.randint(1, truncate_len - masked_len - 1)
 
         prefix = truncated_doc[:prefix_len]

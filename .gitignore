@@ -15,6 +15,7 @@ modern*.txt
 # Results
 results/
 outputs/
+vanilla*
 
 # Logs
 runs/
