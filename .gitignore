@@ -9,6 +9,7 @@
 datasets/
 data/
 en_es_data/
+modern.txt
 
 # Results
 results/
