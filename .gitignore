@@ -9,7 +9,8 @@
 datasets/
 data/
 en_es_data/
-modern.txt
+input*.txt
+modern*.txt
 
 # Results
 results/
