@@ -8,7 +8,7 @@ import argparse
 random.seed(0)
 
 import dataset
-import model
+from model import GPTConfig, GPT
 from trainer import Trainer, TrainerConfig
 import utils
 
@@ -47,7 +47,7 @@ pretrain_dataset = dataset.CharCorruptionDataset(text, block_size)
 
 # We don't suggest you change these hyperparameters, as they're known to work.
 # use them for both the vanilla and the synthesizer models
-mconf = model.GPTConfig(pretrain_dataset.vocab_size, pretrain_dataset.block_size,
+mconf = GPTConfig(pretrain_dataset.vocab_size, pretrain_dataset.block_size,
     n_layer=4, n_head=8, n_embd=256)
 
 def main():
@@ -56,7 +56,7 @@ def main():
     """
 
     if args.variant == 'vanilla':
-        gpt_model = model.GPT(mconf) # TODO [part c]: Make some model here
+        model = GPT(mconf) # TODO [part c]: Make some model here
     elif args.variant == 'synthesizer':
         pass # TODO [part g]: Make some other model here
 
@@ -121,16 +121,17 @@ def main():
                                     num_workers=4)
         text = open(args.finetune_corpus_path, 'r').read()
         train_dataset = dataset.NameDataset(pretrain_dataset, text)
-        trainer = Trainer(gpt_model, train_dataset, None, tconf)
+        trainer = Trainer(model, train_dataset, None, tconf)
         trainer.train()
         # save to args.writing_params_path
-        torch.save(gpt_model.state_dict(), args.writing_params_path)
+        torch.save(model.state_dict(), args.writing_params_path)
 
     elif args.function == 'evaluate':
         assert args.outputs_path is not None
         assert args.reading_params_path is not None
         assert args.eval_corpus_path is not None
         model.load_state_dict(torch.load(args.reading_params_path))
+        model = model.to(device)
         correct = 0
         total = 0
         with open(args.outputs_path, 'w') as fout:
