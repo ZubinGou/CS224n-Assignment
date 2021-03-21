@@ -78,7 +78,8 @@ class Trainer:
             loader = DataLoader(data, batch_size=config.batch_size, num_workers=config.num_workers)
 
             losses = []
-            pbar = tqdm(enumerate(loader), total=len(loader)) if is_train else enumerate(loader)
+            # pbar = tqdm(enumerate(loader), total=len(loader)) if is_train else enumerate(loader)
+            pbar = tqdm(enumerate(loader)) if is_train else enumerate(loader)
             for it, (x, y) in pbar:
 
                 # place data on the correct device
