@@ -100,7 +100,7 @@ class SynthesizerAttention(nn.Module):
 
         # synthesizer
         att = b @ self.w2[:, :T] + self.b2[:T]  # (B, nh, T, hs) x (hs, T) + (T)-> (B, nh, T, T)
-        # ? masked_fill
+        # masked_fill
         att = att.masked_fill(self.mask[:, :, :T, :T] == 0, -1e10)  # todo: just use float('-inf') instead?
         att = F.softmax(att, dim=-1)
         att = self.attn_drop(att)

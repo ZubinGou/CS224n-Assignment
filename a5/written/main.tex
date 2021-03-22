@@ -115,14 +115,22 @@ dev accuracy: \textsl{Correct: 115.0 out of 500.0: 23.0\%}
 
 \subsection{Research! Write and try out the synthesizer variant}
 \subsubsection{}
-dev accuracy:
-
-test accuracy: 
+dev accuracy: \textsl{Correct: 72.0 out of 500.0: 14.40\%}
 
 \subsubsection{}
-\textif{synthesizer} self-attention can't capture 
+\textit{synthesizer} self-attention can't capture contextual information between different positions.
 
 \section{Considerations in pretrained knowledge (5 points)}
+\subsection{}
+The pretrained (vanilla) model contains extra knowledge trained by corrupted span strategy.
 
+\subsection{}
+\begin{enumerate}
+    \item Misleading information: it made up an incorrect birth place that looks real.
+    \item Bias and stereotype.
+\end{enumerate}
+
+\subsection{}
+It might generate the birthplace of some already known person with similar name. However, the similarity of the name has nothing to do with the birthplace in reality.
 
 \end{document}
