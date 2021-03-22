@@ -81,7 +81,7 @@ def main():
         #     num_workers=4
         # pretrain_text = open(args.pretrain_corpus_path, 'r', encoding='utf-8').read()
         # pretrain_dataset = 
-        tconf = TrainerConfig(max_epochs=100,
+        tconf = TrainerConfig(max_epochs=650,
                               batch_size=128,
                               learning_rate=6e-3,
                               lr_decay=True,
@@ -125,7 +125,7 @@ def main():
         #         num_workers=4
         if args.reading_params_path is not None:
             model.load_state_dict(torch.load(args.reading_params_path))
-        tconf = TrainerConfig(max_epochs=20,
+        tconf = TrainerConfig(max_epochs=75,
                               batch_size=256,
                               learning_rate=6e-4,
                               lr_decay=True,
